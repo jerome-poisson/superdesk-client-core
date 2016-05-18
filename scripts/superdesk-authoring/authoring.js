@@ -483,7 +483,7 @@
          * @param {Object} item
          */
         this.isPublished = function isPublished(item) {
-            return _.contains(['published', 'killed', 'scheduled', 'corrected'], item.state);
+            return _.contains(['published', 'killed', 'corrected'], item.state);
         };
 
         /**
@@ -555,7 +555,7 @@
 
             var digital_package = (angular.isDefined(current_item.package_type) &&
                                 current_item.package_type === 'takes');
-            var is_read_only_state = _.contains(['spiked', 'scheduled', 'killed'], current_item.state) ||
+            var is_read_only_state = _.contains(['spiked', 'killed'], current_item.state) ||
                                     digital_package;
 
             var lockedByMe = !lock.isLocked(current_item);
@@ -646,7 +646,7 @@
                     !_.contains(['spiked', 'killed'], current_item.state) &&
                     (angular.isUndefined(current_item.package_type) || current_item.package_type !== 'takes');
 
-                action.add_to_current = !_.contains(['spiked', 'scheduled', 'killed'], current_item.state);
+                action.add_to_current = !_.contains(['spiked', 'killed'], current_item.state);
 
                 var desk = _.find(self.userDesks, {'_id': current_item.task.desk});
                 if (!desk) {

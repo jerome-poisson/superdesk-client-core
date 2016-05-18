@@ -106,6 +106,8 @@
          * @param {Object} item
          */
         this.spike = function(item) {
+            if ('archive_item' in item)
+                { item = item.archive_item } // needed to spike scheduled items
             return api.update(SPIKE_RESOURCE, item, {state: 'spiked'})
                 .then(function() {
                     if ($location.search()._id === item._id) {
@@ -252,7 +254,7 @@
          * @return boolean if the state of the item is in one of the published states, false otherwise.
          */
         this.isPublished = function(item) {
-            return _.contains(['published', 'killed', 'scheduled', 'corrected'], item.state);
+            return _.contains(['published', 'killed', 'corrected'], item.state);
         };
 
         /***
