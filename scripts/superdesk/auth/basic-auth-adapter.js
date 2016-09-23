@@ -1,4 +1,4 @@
-    angular.module('superdesk.auth.basic', []).service('authAdapter', ['$http', '$q', 'urls',
+  angular.module('superdesk.auth.basic', []).service('authAdapter', ['$http', '$q', 'urls',
     function ($http, $q, urls) {
 
         /**
@@ -14,6 +14,20 @@
                 return $http.post(url, {
                     username: username,
                     password: password
+                }).then(function(response) {
+                    response.data.token = 'Basic ' + btoa(response.data.token + ':');
+                    $http.defaults.headers.common.Authorization = response.data.token;
+                    return response.data;
+                });
+            });
+        };
+
+        this.authenticateXmpp = function(jid, transactionId) {
+
+            return urls.resource('auth').then(function(url) {
+                return $http.post(url, {
+                    jid: jid,
+                    transactionId: transactionId
                 }).then(function(response) {
                     response.data.token = 'Basic ' + btoa(response.data.token + ':');
                     $http.defaults.headers.common.Authorization = response.data.token;

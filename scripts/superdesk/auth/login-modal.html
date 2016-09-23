@@ -24,6 +24,22 @@
                     </button>
                 </fieldset>
             </form>
+            <br>
+            <form name="xmppLoginForm" ng-submit="authenticateXmpp()">
+                <fieldset class="inputs">
+                    <input type="text" id="jid" ng-model="jid" placeholder="JID" class="fullwidth-input" ng-disabled="identity.Id" required />
+                    <input type="text" id="transactionId" ng-model="transactionId" class="fullwidth-input" ng-disabled="true" required />
+                </fieldset>
+                <fieldset class="buttons">
+                    <button ng-disabled="isLoading" id="login-btn" type="submit" class="btn btn-green btn-medium">
+                        {{ 'Secure Log In' | translate }}
+                        <div class="spinner" ng-show="isLoading">
+                          <div class="dot1"></div>
+                          <div class="dot2"></div>
+                        </div>
+                    </button>
+                </fieldset>
+            </form>
 
             <div class="error-handler" ng-switch on="loginError">
                 <p class="error" ng-switch-when="401" translate>Oops! Invalid Username or Password.<br />Please try again.</p>

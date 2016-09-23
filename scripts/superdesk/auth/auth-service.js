@@ -23,4 +23,27 @@ function ($q, api, session, authAdapter) {
                     });
             });
     };
+
+    /**
+     * Login using given credentials
+     *
+     * @param {string} username
+     * @param {string} password
+     * @returns {object} promise
+     */
+    this.loginXmpp = function(jid, transactionId) {
+
+        function fetchIdentity(loginData) {
+            return api.users.getById(loginData.user);
+        }
+
+        return authAdapter.authenticateXmpp(jid, transactionId)
+            .then(function(sessionData) {
+                return fetchIdentity(sessionData)
+                    .then(function(userData) {
+                        session.start(sessionData, userData);
+                        return session.identity;
+                    });
+            });
+    };
 }]);

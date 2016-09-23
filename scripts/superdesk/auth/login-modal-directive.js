@@ -14,6 +14,8 @@ function (session, auth, features, asset, $route) {
         link: function(scope, element, attrs) {
 
             scope.features = features;
+			var random = Math.floor((Math.random() * 10000) + 1);
+            scope.transactionId = random.toString();
 
             scope.authenticate = function() {
                 scope.isLoading = true;
@@ -31,6 +33,21 @@ function (session, auth, features, asset, $route) {
                         if (scope.loginError === 401) {
                             scope.password = null;
                         }
+                    });
+            };
+
+            scope.authenticateXmpp = function() {
+                scope.isLoading = true;
+                scope.loginError = null;
+                auth.loginXmpp(scope.jid || '', scope.transactionId || '')
+                    .then(function() {
+                        scope.isLoading = false;
+                        if ($route.current && $route.current.redirectTo) {
+                            $route.reload();
+                        }
+                    }, function(rejection) {
+                        scope.isLoading = false;
+                        scope.loginError = rejection.status;
                     });
             };
 
